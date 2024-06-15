@@ -4,7 +4,16 @@
  */
 package GUI;
 
+import Model.Database;
 import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,10 +22,136 @@ import java.awt.event.KeyEvent;
 public class ManageProduct extends javax.swing.JPanel {
 
     private final Dashboard dashboard;
+    private HashMap<String, Integer> categoryMap = new HashMap<>();
+    private HashMap<String, Integer> brandMap = new HashMap<>();
 
     public ManageProduct(Dashboard dashboard) {
         initComponents();
         this.dashboard = dashboard;
+        loadCategory();
+        loadBrand();
+        loadProduct();
+    }
+
+    private void loadProduct() {
+        String query = "SELECT * FROM `product` INNER JOIN `category` ON `product`.`category_id` = `category`.`id` INNER JOIN `brand` ON `product`.`brand_id` = `brand`.`id` ";
+        String order = null;
+
+        if (!jTextField1.getText().isEmpty()) {
+            if (query.contains("WHERE")) {
+                query += "AND ";
+            } else {
+                query += "WHERE ";
+            }
+            query += "`product`.`name` LIKE '%" + jTextField1.getText() + "%' ";
+        }
+        if (jComboBox1.getSelectedIndex() != 0) {
+            if (query.contains("WHERE")) {
+                query += "AND ";
+            } else {
+                query += "WHERE ";
+            }
+            query += "`category`.`name` = '" + String.valueOf(jComboBox1.getSelectedItem()) + "' ";
+        }
+        if (jComboBox2.getSelectedIndex() != 0) {
+            if (query.contains("WHERE")) {
+                query += "AND ";
+            } else {
+                query += "WHERE ";
+            }
+            query += "`brand`.`name` = '" + String.valueOf(jComboBox2.getSelectedItem()) + "' ";
+        }
+        switch (jComboBox3.getSelectedIndex()) {
+            case 0:
+                order = "`product`.`id` ASC";
+                break;
+            case 1:
+                order = "`product`.`id` DESC";
+                break;
+            case 2:
+                order = "`product`.`name` ASC";
+                break;
+            case 3:
+                order = "`product`.`name` DESC";
+                break;
+            default:
+                order = "`product`.`id` ASC";
+                break;
+        }
+        query += "ORDER BY " + order;
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        try {
+            ResultSet rs = Database.execute(query);
+            while (rs.next()) {
+                Vector<String> v = new Vector<>();
+                v.add(rs.getString("product.id"));
+                v.add(rs.getString("category.name"));
+                v.add(rs.getString("brand.name"));
+                v.add(rs.getString("product.name"));
+                if (rs.getString("product.status").equals("1")) {
+                    v.add("Active");
+                } else if (rs.getString("product.status").equals("2")) {
+                    v.add("Deactive");
+                } else if (rs.getString("product.status").equals("3")) {
+                    v.add("Banded");
+                }
+                model.addRow(v);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+        dtcr.setHorizontalAlignment(SwingConstants.CENTER);
+        jTable1.setDefaultRenderer(Object.class, dtcr);
+    }
+
+    private void loadCategory() {
+        Vector<String> v = new Vector<>();
+        v.add("All Categories");
+
+        try {
+            ResultSet rs = Database.execute("SELECT * FROM `category` WHERE `status` = '1'");
+            while (rs.next()) {
+                v.add(rs.getString("name"));
+                categoryMap.put(rs.getString("name"), rs.getInt("id"));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        DefaultComboBoxModel model = new DefaultComboBoxModel(v);
+        jComboBox1.setModel(model);
+    }
+
+    private void loadBrand() {
+        Vector<String> v = new Vector<>();
+        v.add("All Brands");
+
+        try {
+            ResultSet rs = Database.execute("SELECT * FROM `brand` WHERE `status` = '1'");
+            while (rs.next()) {
+                v.add(rs.getString("name"));
+                brandMap.put(rs.getString("name"), rs.getInt("id"));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        DefaultComboBoxModel model = new DefaultComboBoxModel(v);
+        jComboBox2.setModel(model);
+    }
+
+    private void clearProduct() {
+        jTextField1.setText(null);
+        jComboBox1.setSelectedIndex(0);
+        jComboBox2.setSelectedIndex(0);
+        jComboBox3.setSelectedIndex(0);
+        jTable1.clearSelection();
+        jTable1.setEnabled(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -88,7 +223,7 @@ public class ManageProduct extends javax.swing.JPanel {
         jComboBox3.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox3.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jComboBox3.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Ascending Order", "ID Descending Order" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Ascending Order", "ID Descending Order", "Name Ascending Order", "Name Descending Order" }));
         jComboBox3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jComboBox3.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -344,37 +479,40 @@ public class ManageProduct extends javax.swing.JPanel {
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            //            loadUsers();
+            loadProduct();
         }
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
-        //        loadUsers();
+        loadProduct();
     }//GEN-LAST:event_jComboBox3ItemStateChanged
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        // TODO add your handling code here:
+        loadProduct();
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-        // TODO add your handling code here:
+        loadProduct();
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        clearProduct();
+        loadProduct();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox4ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox4ItemStateChanged
-        //        loadUsers();
+        //        loadproducts();
     }//GEN-LAST:event_jComboBox4ItemStateChanged
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //        clear();
-        //        loadUsers();
+        //        loadproducts();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        new Product(this.dashboard, true).setVisible(true);
+        clearProduct();
+        loadProduct();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

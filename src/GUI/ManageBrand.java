@@ -8,7 +8,6 @@ import Model.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -18,27 +17,27 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author SINGER
  */
-public class ManageCompany extends javax.swing.JDialog {
+public class ManageBrand extends javax.swing.JDialog {
 
-    private int x, y;
-    private final Supplier supplier;
     private String id;
+    private final Product product;
+    private int x, y;
 
-    public ManageCompany(java.awt.Frame parent, boolean modal, Supplier supplier) {
+    public ManageBrand(java.awt.Frame parent, boolean modal, Product product) {
         super(parent, modal);
         initComponents();
-        this.supplier = supplier;
+        this.product = product;
         jPanel1.requestFocus();
         jButton3.setVisible(false);
         jButton5.setVisible(false);
-        loadCompany();
+        loadBrand();
     }
 
-    private void loadCompany() {
-        String query = "SELECT * FROM `company` ";
+    private void loadBrand() {
+        String query = "SELECT * FROM `brand` ";
 
-        if (!jTextField2.getText().isEmpty()) {
-            query += "WHERE `hotline` LIKE '" + jTextField2.getText() + "%' ";
+        if (!jTextField1.getText().isEmpty()) {
+            query += "WHERE `name` LIKE '" + jTextField1.getText() + "%' ";
         }
 
         if (jComboBox1.getSelectedIndex() != 0) {
@@ -60,7 +59,6 @@ public class ManageCompany extends javax.swing.JDialog {
                 Vector<String> v = new Vector<>();
                 v.add(resultSet.getString("id"));
                 v.add(resultSet.getString("name"));
-                v.add(resultSet.getString("hotline"));
                 if (resultSet.getString("status").equals("1")) {
                     v.add("Active");
                 } else {
@@ -77,32 +75,8 @@ public class ManageCompany extends javax.swing.JDialog {
         jTable1.setDefaultRenderer(Object.class, dtcr);
     }
 
-    private boolean validation() {
-        if (jTextField1.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter company name", "Warning", JOptionPane.WARNING_MESSAGE);
-            jTextField1.requestFocus();
-            return false;
-        } else if (jTextField2.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter company hotline", "Warning", JOptionPane.WARNING_MESSAGE);
-            jTextField1.requestFocus();
-            return false;
-        } else if (!jTextField2.getText().matches("^0[1-9]{2}[0-9]{7}$")) {
-
-            JOptionPane.showMessageDialog(this, "Invalid company hotline(ex:- 0xxxxxxxxx)", "Warning", JOptionPane.WARNING_MESSAGE);
-            jTextField2.requestFocus();
-            return false;
-        } else if (jComboBox1.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Please select company status", "Warning", JOptionPane.WARNING_MESSAGE);
-            jComboBox1.requestFocus();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     private void clear() {
         jTextField1.setText(null);
-        jTextField2.setText(null);
         jComboBox1.setSelectedIndex(0);
         jTable1.clearSelection();
         jTable1.setEnabled(true);
@@ -122,7 +96,6 @@ public class ManageCompany extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
@@ -161,23 +134,23 @@ public class ManageCompany extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Company Management");
+        jLabel2.setText("Brand Management");
         jLabel2.setOpaque(true);
 
         jTable1.setBackground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "ID", "Name", "Hotline", "Status"
+                "ID", "Name", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -197,19 +170,6 @@ public class ManageCompany extends javax.swing.JDialog {
         jTextField1.setForeground(new java.awt.Color(0, 0, 0));
         jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Comic Sans MS", 0, 14), new java.awt.Color(0, 0, 0))); // NOI18N
 
-        jTextField2.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField2.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Hotline", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Comic Sans MS", 0, 14), new java.awt.Color(0, 0, 0))); // NOI18N
-        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField2KeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField2KeyTyped(evt);
-            }
-        });
-
         jButton4.setBackground(new java.awt.Color(0, 0, 0));
         jButton4.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
@@ -226,7 +186,7 @@ public class ManageCompany extends javax.swing.JDialog {
         jButton2.setBackground(new java.awt.Color(0, 102, 255));
         jButton2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Add Company");
+        jButton2.setText("Add Brand");
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,7 +197,7 @@ public class ManageCompany extends javax.swing.JDialog {
         jButton3.setBackground(new java.awt.Color(255, 204, 51));
         jButton3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Update Company");
+        jButton3.setText("Update Brand");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -265,11 +225,6 @@ public class ManageCompany extends javax.swing.JDialog {
         jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Active", "Deactive" }));
         jComboBox1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Status", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Comic Sans MS", 0, 14), new java.awt.Color(0, 0, 0))); // NOI18N
-        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox1ItemStateChanged(evt);
-            }
-        });
 
         jButton5.setBackground(new java.awt.Color(102, 102, 255));
         jButton5.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
@@ -289,7 +244,7 @@ public class ManageCompany extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -302,9 +257,7 @@ public class ManageCompany extends javax.swing.JDialog {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -316,12 +269,10 @@ public class ManageCompany extends javax.swing.JDialog {
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -329,7 +280,7 @@ public class ManageCompany extends javax.swing.JDialog {
                         .addComponent(jButton4)
                         .addComponent(jButton5)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -337,86 +288,18 @@ public class ManageCompany extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-        this.x = evt.getX();
-        this.y = evt.getY();
-    }//GEN-LAST:event_jPanel1MousePressed
-
-    private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
-        this.setLocation(evt.getXOnScreen() - this.x, evt.getYOnScreen() - this.y);
-    }//GEN-LAST:event_jPanel1MouseDragged
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (validation()) {
-            String name = jTextField1.getText();
-            String hotline = jTextField2.getText();
-            int status = jComboBox1.getSelectedIndex();
-
-            try {
-                ResultSet resultSet = Database.execute("SELECT * FROM `company` WHERE `hotline` = '" + hotline + "'");
-                if (resultSet.next()) {
-                    JOptionPane.showMessageDialog(this, "This hotline number already exsits", "Warning", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    Database.execute("INSERT INTO `company` (`name`, `hotline`, `status`) VALUES ('" + name + "', '" + hotline + "', '" + status + "')");
-                    JOptionPane.showMessageDialog(this, "Comapny successfully added", "Information", JOptionPane.INFORMATION_MESSAGE);
-                    clear();
-                    loadCompany();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int row = jTable1.getSelectedRow();
-        if (String.valueOf(jTable1.getValueAt(row, 3)).equals("Active")) {
-            int confirm = JOptionPane.showConfirmDialog(this, "Do you want to update this company details?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (confirm == JOptionPane.YES_OPTION) {
-                if (validation()) {
-                    String name = jTextField1.getText();
-                    String hotline = jTextField2.getText();
-                    int status = jComboBox1.getSelectedIndex();
-
-                    try {
-                        ResultSet resultSet = Database.execute("SELECT * FROM `company` WHERE `hotline` = '" + hotline + "' AND NOT `id` = '" + id + "'");
-                        if (resultSet.next()) {
-                            JOptionPane.showMessageDialog(this, "This hotline number already exsits", "Warning", JOptionPane.WARNING_MESSAGE);
-                        } else {
-                            Database.execute("UPDATE `company` SET `name` = '" + name + "', `hotline` = '" + hotline + "', `status` = '" + status + "' WHERE `id` = '" + this.id + "'");
-                            JOptionPane.showMessageDialog(this, "Comapny successfully updateed", "Information", JOptionPane.INFORMATION_MESSAGE);
-                            clear();
-                            loadCompany();
-                        }
-                    } catch (SQLException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Not a active company", "Warining", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        clear();
-        loadCompany();
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
@@ -431,47 +314,103 @@ public class ManageCompany extends javax.swing.JDialog {
                 jButton3.setVisible(true);
                 jButton5.setVisible(true);
                 jTextField1.setText(String.valueOf(jTable1.getValueAt(row, 1)));
-                jTextField2.setText(String.valueOf(jTable1.getValueAt(row, 2)));
-                jComboBox1.setSelectedItem(jTable1.getValueAt(row, 3));
+                jComboBox1.setSelectedItem(jTable1.getValueAt(row, 2));
                 jTable1.setEnabled(false);
                 jPanel1.requestFocus();
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
-        String mobile = jTextField2.getText();
-        String text = mobile + evt.getKeyChar();
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        clear();
+        loadBrand();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
-        if (mobile.length() == 10) {
-            evt.consume();
-        } else if (!Pattern.compile("[0-9]+").matcher(text).matches()) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_jTextField2KeyTyped
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String name = jTextField1.getText();
+        int status = jComboBox1.getSelectedIndex();
 
-    private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
-        if (this.id.isEmpty()) {
-            loadCompany();
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter brand name", "Warning", JOptionPane.WARNING_MESSAGE);
+            jTextField1.requestFocus();
+        } else if (status == 0) {
+            JOptionPane.showMessageDialog(this, "Please select status", "Warning", JOptionPane.WARNING_MESSAGE);
+            jComboBox1.requestFocus();
+        } else {
+
+            try {
+                ResultSet resultSet = Database.execute("SELECT * FROM `brand` WHERE `name` = '" + name + "'");
+                if (resultSet.next()) {
+                    JOptionPane.showMessageDialog(this, "This brand already exsits", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    Database.execute("INSERT INTO `brand` (`name`, `status`) VALUES ('" + name + "', '" + status + "')");
+                    JOptionPane.showMessageDialog(this, "brand successfully added", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    clear();
+                    loadBrand();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
-    }//GEN-LAST:event_jTextField2KeyReleased
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int row = jTable1.getSelectedRow();
+        if (String.valueOf(jTable1.getValueAt(row, 2)).equals("Active")) {
+            int confirm = JOptionPane.showConfirmDialog(this, "Do you want to update this company details?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (confirm == JOptionPane.YES_OPTION) {
+                String name = jTextField1.getText();
+                int status = jComboBox1.getSelectedIndex();
+
+                if (name.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please enter brand name", "Warning", JOptionPane.WARNING_MESSAGE);
+                    jTextField1.requestFocus();
+                } else if (status == 0) {
+                    JOptionPane.showMessageDialog(this, "Please select status", "Warning", JOptionPane.WARNING_MESSAGE);
+                    jComboBox1.requestFocus();
+                } else {
+
+                    try {
+                        ResultSet resultSet = Database.execute("SELECT * FROM `brand` WHERE `name` = '" + name + "' AND NOT `id` = '" + id + "'");
+                        if (resultSet.next()) {
+                            JOptionPane.showMessageDialog(this, "This brand already exsits", "Warning", JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            Database.execute("UPDATE `brand` SET `name` = '" + name + "',  `status` = '" + status + "' WHERE `id` = '" + this.id + "'");
+                            JOptionPane.showMessageDialog(this, "brand successfully updateed", "Information", JOptionPane.INFORMATION_MESSAGE);
+                            clear();
+                            loadBrand();
+                        }
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Not a active brand", "Warining", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         int row = jTable1.getSelectedRow();
         if (row != -1) {
-            if (String.valueOf(jTable1.getValueAt(row, 3)).equals("Active")) {
-                this.supplier.setCompanyId(String.valueOf(jTable1.getValueAt(row, 0)));
-                this.supplier.getjTextField4().setText(String.valueOf(jTable1.getValueAt(row, 1)));
+            if (String.valueOf(jTable1.getValueAt(row, 2)).equals("Active")) {
+                this.product.setBrandId(String.valueOf(jTable1.getValueAt(row, 0)));
+                this.product.getjTextField4().setText(String.valueOf(jTable1.getValueAt(row, 1)));
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Please select a active company", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please select a active brand", "Warning", JOptionPane.WARNING_MESSAGE);
             }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        loadCompany();
-    }//GEN-LAST:event_jComboBox1ItemStateChanged
+    private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
+        this.setLocation(evt.getXOnScreen() - this.x, evt.getYOnScreen() - this.y);
+    }//GEN-LAST:event_jPanel1MouseDragged
+
+    private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
+        this.x = evt.getX();
+        this.y = evt.getY();
+    }//GEN-LAST:event_jPanel1MousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -486,6 +425,5 @@ public class ManageCompany extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

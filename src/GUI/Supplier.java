@@ -68,11 +68,11 @@ public class Supplier extends javax.swing.JDialog {
             return false;
         } else if (jTextField2.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter supplier's last name", "Warning", JOptionPane.WARNING_MESSAGE);
-            jTextField1.requestFocus();
+            jTextField2.requestFocus();
             return false;
         } else if (jTextField3.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter supplier's mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
-            jTextField2.requestFocus();
+            jTextField3.requestFocus();
             return false;
         } else if (!jTextField3.getText().matches("^07[01245678]{1}[0-9]{7}$")) {
             JOptionPane.showMessageDialog(this, "Invalid supplier's mobile number (ex:- 07xxxxxxxx)", "Warning", JOptionPane.WARNING_MESSAGE);
