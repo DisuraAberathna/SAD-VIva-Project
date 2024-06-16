@@ -17,7 +17,7 @@ import javax.swing.JTextField;
  */
 public class Product extends javax.swing.JDialog {
 
-    private int x, y;
+    private int x, y, status;
     private Dashboard dashboard;
     private String productId, categoryId, brandId;
 
@@ -57,8 +57,9 @@ public class Product extends javax.swing.JDialog {
         jTextField2.setText(map.get("name"));
         jTextField3.setText(map.get("category"));
         jTextField4.setText(map.get("brand"));
-        this.categoryId = map.get("companyId");
+        this.categoryId = map.get("categoryId");
         this.brandId = map.get("brandId");
+        this.status = 1;
 
         jPanel1.requestFocus();
         jButton2.setVisible(false);
@@ -266,7 +267,7 @@ public class Product extends javax.swing.JDialog {
             String name = jTextField2.getText();
 
             try {
-                ResultSet resultSet = Database.execute("SELECT * FROM `product` WHERE `name` = '" + name + "'");
+                ResultSet resultSet = Database.execute("SELECT * FROM `product` WHERE `name` = '" + name + "' AND `category_id` = '" + this.categoryId + "' AND `brand_id` = '" + this.brandId + "'");
                 if (resultSet.next()) {
                     JOptionPane.showMessageDialog(this, "This product already exsits", "Warning", JOptionPane.WARNING_MESSAGE);
                 } else {
@@ -281,7 +282,23 @@ public class Product extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int check = JOptionPane.showConfirmDialog(this, "Do you want to update product?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (check == JOptionPane.YES_OPTION) {
+            String name = jTextField2.getText();
 
+            try {
+                ResultSet resultSet = Database.execute("SELECT * FROM `product` WHERE `name` = '" + name + "' AND `category_id` = '" + this.categoryId + "' AND `brand_id` = '" + this.brandId + "' AND NOT `id` = '" + this.productId + "'");
+                if (resultSet.next()) {
+                    JOptionPane.showMessageDialog(this, "This product name already exsits", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    Database.execute("UPDATE `product` SET `name` = '" + name + "' WHERE `id` = '" + this.productId + "'");
+                    JOptionPane.showMessageDialog(this, "Product successfully updated", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
@@ -302,13 +319,13 @@ public class Product extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jTextField3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField3MouseClicked
-        if (evt.getClickCount() == 2 && evt.getButton() == 1) {
+        if (evt.getClickCount() == 2 && evt.getButton() == 1 && this.status == 0) {
             new ManageCategory(this.dashboard, true, this).setVisible(true);
         }
     }//GEN-LAST:event_jTextField3MouseClicked
 
     private void jTextField4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField4MouseClicked
-        if (evt.getClickCount() == 2 && evt.getButton() == 1) {
+        if (evt.getClickCount() == 2 && evt.getButton() == 1 && this.status == 0) {
             new ManageBrand(this.dashboard, true, this).setVisible(true);
         }
     }//GEN-LAST:event_jTextField4MouseClicked

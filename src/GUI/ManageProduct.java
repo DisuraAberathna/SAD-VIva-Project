@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -22,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 public class ManageProduct extends javax.swing.JPanel {
 
     private final Dashboard dashboard;
+    private HashMap<String, String> map = new HashMap<>();
     private HashMap<String, Integer> categoryMap = new HashMap<>();
     private HashMap<String, Integer> brandMap = new HashMap<>();
 
@@ -152,12 +154,16 @@ public class ManageProduct extends javax.swing.JPanel {
         jComboBox3.setSelectedIndex(0);
         jTable1.clearSelection();
         jTable1.setEnabled(true);
+        map.clear();
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
@@ -177,6 +183,24 @@ public class ManageProduct extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+
+        jMenuItem2.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        jMenuItem2.setText("Update Product");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem2);
+
+        jMenuItem1.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        jMenuItem1.setText("Update Status");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -294,6 +318,11 @@ public class ManageProduct extends javax.swing.JPanel {
             }
         });
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(3).setResizable(false);
@@ -519,6 +548,52 @@ public class ManageProduct extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 1 && evt.getButton() == 3) {
+            jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        int row = jTable1.getSelectedRow();
+        if (row != -1) {
+            ProductStatus status = new ProductStatus(this.dashboard, true);
+            status.setProduct(String.valueOf(jTable1.getValueAt(row, 0)), String.valueOf(jTable1.getValueAt(row, 3)), String.valueOf(jTable1.getValueAt(row, 4)));
+            status.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this.dashboard, "Please select a product", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        jTable1.clearSelection();
+        jPanel1.requestFocus();
+        loadProduct();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this, "Do you want to update this product's details?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            int row = jTable1.getSelectedRow();
+            if (row != -1) {
+                if (String.valueOf(jTable1.getValueAt(row, 8)).equals("Active")) {
+                    map.put("id", String.valueOf(jTable1.getValueAt(row, 0)));
+                    map.put("category", String.valueOf(jTable1.getValueAt(row, 1)));
+                    map.put("categoryId", String.valueOf(categoryMap.get(String.valueOf(jTable1.getValueAt(row, 1)))));
+                    map.put("brand", String.valueOf(jTable1.getValueAt(row, 2)));
+                    map.put("brandId", String.valueOf(categoryMap.get(String.valueOf(jTable1.getValueAt(row, 2)))));
+                    map.put("name", String.valueOf(jTable1.getValueAt(row, 3)));
+                    Product product = new Product(this.dashboard, true, map);
+                    product.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Not a active product", "Warining", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this.dashboard, "Please select a product", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        jTable1.clearSelection();
+        jPanel1.requestFocus();
+        loadProduct();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -532,9 +607,12 @@ public class ManageProduct extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
