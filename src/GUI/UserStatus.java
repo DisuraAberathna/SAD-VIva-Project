@@ -15,11 +15,14 @@ import javax.swing.JOptionPane;
 public class UserStatus extends javax.swing.JDialog {
 
     private int x, y;
+    private String currentStatus;
 
-    public UserStatus(java.awt.Frame parent, boolean modal, String id) {
+    public UserStatus(java.awt.Frame parent, boolean modal, String id, String status) {
         super(parent, modal);
         initComponents();
         jTextField1.setText(id);
+        jComboBox1.setSelectedItem(status);
+        this.currentStatus = status;
     }
 
     @SuppressWarnings("unchecked")
@@ -151,10 +154,12 @@ public class UserStatus extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Plese select user status", "Warning", JOptionPane.WARNING_MESSAGE);
                 jComboBox1.requestFocus();
             } else {
-                try {
-                    Database.execute("UPDATE `user` SET `status` = '" + jComboBox1.getSelectedIndex() + "' WHERE `id` = '" + jTextField1.getText() + "'");
-                } catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
+                if (!this.currentStatus.equals(String.valueOf(jComboBox1.getSelectedItem()))) {
+                    try {
+                        Database.execute("UPDATE `user` SET `status` = '" + jComboBox1.getSelectedIndex() + "' WHERE `id` = '" + jTextField1.getText() + "'");
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                 }
                 JOptionPane.showMessageDialog(this, "User status successfully updated", "Information", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();

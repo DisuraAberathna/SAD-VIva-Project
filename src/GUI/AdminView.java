@@ -31,18 +31,20 @@ public class AdminView extends javax.swing.JPanel {
         jButton7.setText(null);
         jButton8.setText(null);
         jButton9.setText(null);
+        jButton10.setText(null);
     }
 
     public void addText() {
         jButton1.setText("Dashboard");
         jButton2.setText("User Management");
         jButton3.setText("Supplier Management");
-        jButton4.setText("Stock Management");
+        jButton4.setText("GRN Management");
         jButton5.setText("Product Management");
         jButton6.setText("Customer Management");
         jButton7.setText("Damage Product");
         jButton8.setText("Sign Out");
         jButton9.setText("Profile");
+        jButton10.setText("Invoice Management");
     }
 
     @SuppressWarnings("unchecked")

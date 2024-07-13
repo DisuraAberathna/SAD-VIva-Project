@@ -361,7 +361,7 @@ public class ManageCustomer extends javax.swing.JPanel {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int row = jTable1.getSelectedRow();
-        if (evt.getClickCount() == 2 && evt.getButton() == 1) {
+        if (evt.getClickCount() == 2 && evt.getButton() == 1 && this.s_customer != null) {
             detailsMap.put("id", String.valueOf(jTable1.getValueAt(row, 0)));
             detailsMap.put("mobile", String.valueOf(jTable1.getValueAt(row, 1)));
             detailsMap.put("fname", String.valueOf(jTable1.getValueAt(row, 2)));

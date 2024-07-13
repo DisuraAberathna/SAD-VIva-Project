@@ -32,7 +32,7 @@ public class UserView extends javax.swing.JPanel {
 
     public void addText() {
         jButton1.setText("Dashboard");
-        jButton4.setText("Stock Management");
+        jButton4.setText("Invoice Management");
         jButton6.setText("Customer Management");
         jButton8.setText("Sign Out");
         jButton9.setText("Profile");

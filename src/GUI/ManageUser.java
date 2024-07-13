@@ -133,7 +133,6 @@ public class ManageUser extends javax.swing.JPanel {
         jPanel1.requestFocus();
         jButton10.setEnabled(true);
         jButton11.setEnabled(false);
-        jButton12.setEnabled(false);
         detailsMap.clear();
     }
 
@@ -141,13 +140,15 @@ public class ManageUser extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
         jScrollPane11 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton9 = new javax.swing.JButton();
@@ -155,6 +156,24 @@ public class ManageUser extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jComboBox3 = new javax.swing.JComboBox<>();
+
+        jMenuItem1.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        jMenuItem1.setText("User Address");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
+
+        jMenuItem2.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        jMenuItem2.setText("Update User Status");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem2);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -210,18 +229,6 @@ public class ManageUser extends javax.swing.JPanel {
             }
         });
 
-        jButton12.setBackground(new java.awt.Color(0, 102, 255));
-        jButton12.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jButton12.setForeground(new java.awt.Color(255, 255, 255));
-        jButton12.setText("User Address");
-        jButton12.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton12.setEnabled(false);
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -231,9 +238,7 @@ public class ManageUser extends javax.swing.JPanel {
                 .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(516, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,8 +246,7 @@ public class ManageUser extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -358,7 +362,7 @@ public class ManageUser extends javax.swing.JPanel {
                         .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane11))
                 .addGap(0, 0, 0)
@@ -388,13 +392,13 @@ public class ManageUser extends javax.swing.JPanel {
                                 .addGap(42, 42, 42)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField1)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(2, 2, 2))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(0, 0, Short.MAX_VALUE)
-                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(2, 2, 2))))))
+                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
                         .addGap(6, 6, 6)))
@@ -444,27 +448,11 @@ public class ManageUser extends javax.swing.JPanel {
             jTable1.setEnabled(false);
             jButton10.setEnabled(false);
             jButton11.setEnabled(true);
-            jButton12.setEnabled(true);
         }
         if (evt.getClickCount() == 1 && evt.getButton() == 3) {
-            if (row != -1) {
-                new UserStatus(this.dashboard, true, String.valueOf(jTable1.getValueAt(row, 0))).setVisible(true);
-                clear();
-                loadUsers();
-            }
+            jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_jTable1MouseClicked
-
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        int row = jTable1.getSelectedRow();
-        if (String.valueOf(jTable1.getValueAt(row, 8)).equals("Active")) {
-            new UserAddress(this.dashboard, true, detailsMap.get("id")).setVisible(true);
-            clear();
-            loadUsers();
-        } else {
-            JOptionPane.showMessageDialog(this, "Not a active user", "Warining", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         int row = jTable1.getSelectedRow();
@@ -484,19 +472,47 @@ public class ManageUser extends javax.swing.JPanel {
         loadUsers();
     }//GEN-LAST:event_jComboBox3ItemStateChanged
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        int row = jTable1.getSelectedRow();
+        if (row != -1) {
+            if (String.valueOf(jTable1.getValueAt(row, 8)).equals("Active")) {
+                new UserAddress(this.dashboard, true, String.valueOf(jTable1.getValueAt(row, 0))).setVisible(true);
+                clear();
+                loadUsers();
+            } else {
+                JOptionPane.showMessageDialog(this, "Not a active user", "Warining", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this.dashboard, "Please select a user", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        int row = jTable1.getSelectedRow();
+        if (row != -1) {
+            new UserStatus(this.dashboard, true, String.valueOf(jTable1.getValueAt(row, 0)), String.valueOf(jTable1.getValueAt(row, 8))).setVisible(true);
+            clear();
+            loadUsers();
+        } else {
+            JOptionPane.showMessageDialog(this.dashboard, "Please select a user", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
